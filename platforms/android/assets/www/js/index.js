@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 var app = {
     SOME_CONSTANTS : false,  // some constant
 
@@ -43,6 +44,16 @@ var app = {
         console.log("device ready, start making you custom calls!");
 
         // Start adding your code here....
+        document.addEventListener('deviceready', initApp, false);
 
+        var fbLoginSuccess = function(userData)
+        {
+            alert("UserInfo: " + JSON.stringify(userData));
+        }
+
+        function initApp()
+        {
+            facebookConnectPlugin.login(["public_profile"],fbLoginSuccess,function(error){alert(""+error)});
+        }
     }
 };

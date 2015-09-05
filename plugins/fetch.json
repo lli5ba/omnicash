@@ -6,5 +6,16 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com.phonegap.plugins.facebookconnect": {
+        "source": {
+            "type": "local",
+            "path": "D:\\Documents\\OmniCash\\p2p-atm\\phonegap-facebook-plugin"
+        },
+        "is_top_level": true,
+        "variables": {
+            "APP_ID": "163727293963753",
+            "APP_NAME": "OmniCash"
+        }
     }
 }
