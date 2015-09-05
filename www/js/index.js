@@ -23,8 +23,8 @@ var app = {
 
     // Application Constructor
     initialize: function() {
-        var appID = gzpxlYNEqosH2z2A8s7Dyk1mw7GPzkxpcVdY663F;
-        var jsID = jPgyT1EMzPabkbcAdbcgrI9rPCeIvFpzRJ9yDZuF;
+        var appID = 'gzpxlYNEqosH2z2A8s7Dyk1mw7GPzkxpcVdY663F';
+        var jsID = 'jPgyT1EMzPabkbcAdbcgrI9rPCeIvFpzRJ9yDZuF';
         Parse.initialize(appID, jsID);
         console.log("console log init");
         this.bindEvents();
@@ -46,26 +46,20 @@ var app = {
 
     onDeviceReady: function() {
         console.log("device ready, start making you custom calls!");
+        //alert("test");
         initApp();
-        //document.getElementById("infoButton").addEventListener("click", showInfo, false);
+        var AtmUser = Parse.Object.extend("AtmUser");
         document.getElementById("login").addEventListener("click", initApp, false);      
         var fbInfo;
         var fbLoginSuccess = function(userData)
         {
-            alert("UserInfo: " + JSON.stringify(userData));
-            fbInfo = JSON.stringify(userData);
-            checkUserBank(fbInfo);
+            fbInfo = userData;
+            checkUserBank();
             //document.getElementById('lblFB').innerHTML = fbInfo;
         }
 
         function initApp()
         {
-            try{
-            //facebookConnectPlugin.login(["public_profile"],fbLoginSuccess,function(error){alert("Error: "+error)});
-            }catch(e)
-            {
-                alert(e);
-            }
 
             facebookConnectPlugin.getLoginStatus(function (response) {
 
@@ -74,21 +68,48 @@ var app = {
                     fbLoginSuccess,
                     function (response) { alert(JSON.stringify(response)) });
                 } else {
-                   fbInfo = JSON.stringify(response);
-                   checkUserBank(fbInfo);
+                   fbInfo = response;
+                   checkUserBank();
                 }
 
             },function (response) { alert(JSON.stringify(response)) });
             //document.getElementById('lblFB').innerHTML = fbInfo;
         }
-        function checkUserBank(userData)
+        function checkUserBank()
         {
-            window.location = "bankForm.html";
-            alert(JSON.stringify(fbInfo));
+            localStorage.setItem("userID",fbInfo.authResponse.userID);
+            var userQuery = new Parse.Query(AtmUser);
+            userQuery.equalTo("userID",fbInfo.authResponse.userID);
+            userQuery.find({
+                success: function(results){
+                    if(results.length > 0)
+                    {
+                        alert("Found user!");
+                    }else{
+                        window.location = "bankForm.html";
+                    }
+                },
+                error: function(error){
+                    alert(error.message);
+                }
+
+            });
         }
-        function showInfo()
+        function createUser(account,routing)
         {
-            alert(fbInfo);
+            var user = new AtmUser();
+            user.set('userID',fbInfo.authResponse.userID);
+            user.set('account',account);
+            user.set('routing',routing);
+
+            user.save(null, {
+                success: function(user){
+
+                },
+                error: function(user, error){
+                    alert(error.message);
+                }
+            });
         }
 
     }
