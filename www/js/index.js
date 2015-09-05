@@ -44,13 +44,14 @@ var app = {
     onDeviceReady: function() {
         console.log("device ready, start making you custom calls!");
         initApp();
-        document.getElementById("infoButton").addEventListener("click", showInfo, false);
+        //document.getElementById("infoButton").addEventListener("click", showInfo, false);
         document.getElementById("login").addEventListener("click", initApp, false);      
         var fbInfo;
         var fbLoginSuccess = function(userData)
         {
             alert("UserInfo: " + JSON.stringify(userData));
             fbInfo = JSON.stringify(userData);
+            checkUserBank(fbInfo);
             //document.getElementById('lblFB').innerHTML = fbInfo;
         }
 
@@ -71,14 +72,16 @@ var app = {
                     function (response) { alert(JSON.stringify(response)) });
                 } else {
                    fbInfo = JSON.stringify(response);
+                   checkUserBank(fbInfo);
                 }
 
             },function (response) { alert(JSON.stringify(response)) });
             //document.getElementById('lblFB').innerHTML = fbInfo;
         }
-        function alertDismissed()
+        function checkUserBank(userData)
         {
-
+            window.location = "bankForm.html";
+            alert(JSON.stringify(fbInfo));
         }
         function showInfo()
         {
