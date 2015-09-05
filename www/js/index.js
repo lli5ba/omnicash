@@ -78,6 +78,7 @@ var app = {
         function checkUserBank()
         {
             localStorage.setItem("userID",fbInfo.authResponse.userID);
+            localStorage.setItem("name", fbInfo.name);
             var userQuery = new Parse.Query(AtmUser);
             userQuery.equalTo("userID",fbInfo.authResponse.userID);
             userQuery.find({
