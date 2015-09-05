@@ -35,6 +35,10 @@
                         {
                             "xml": "<access origin=\"https://*.akamaihd.net\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"android-package\" value=\"org.apache.cordova.dialogs.Notification\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -76,6 +80,9 @@
         "com.phonegap.plugins.facebookconnect": {
             "APP_ID": "163727293963753",
             "APP_NAME": "OmniCash",
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },

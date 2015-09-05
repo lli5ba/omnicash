@@ -17,17 +17,13 @@
  * under the License.
  */
 
-
 var app = {
     SOME_CONSTANTS : false,  // some constant
 
 
     // Application Constructor
     initialize: function() {
-        var parse_appID = gzpxlYNEqosH2z2A8s7Dyk1mw7GPzkxpcVdY663F;
-        var parse_jsID = jPgyT1EMzPabkbcAdbcgrI9rPCeIvFpzRJ9yDZuF;
         console.log("console log init");
-        Parse.initialize("parse_appID", "parse_jsID");
         this.bindEvents();
         this.initFastClick();
     },
@@ -44,22 +40,54 @@ var app = {
         }, false);
     },
     // Phonegap is now ready...
+
     onDeviceReady: function() {
         console.log("device ready, start making you custom calls!");
-
-        // Start adding your code here....
-        document.addEventListener('deviceready', initApp, false);
-
+        initApp();
+        //document.getElementById("infoButton").addEventListener("click", showInfo, false);
+        document.getElementById("login").addEventListener("click", initApp, false);      
+        var fbInfo;
         var fbLoginSuccess = function(userData)
         {
             alert("UserInfo: " + JSON.stringify(userData));
+            fbInfo = JSON.stringify(userData);
+            checkUserBank(fbInfo);
+            //document.getElementById('lblFB').innerHTML = fbInfo;
         }
 
         function initApp()
         {
-            facebookConnectPlugin.login(["public_profile"],
-                fbLoginSuccess,
-                function(error){alert(""+error)});
+            try{
+            //facebookConnectPlugin.login(["public_profile"],fbLoginSuccess,function(error){alert("Error: "+error)});
+            }catch(e)
+            {
+                alert(e);
+            }
+
+            facebookConnectPlugin.getLoginStatus(function (response) {
+
+                if (response.status !== 'connected') {
+                    facebookConnectPlugin.login( ["public_profile"],
+                    fbLoginSuccess,
+                    function (response) { alert(JSON.stringify(response)) });
+                } else {
+                   fbInfo = JSON.stringify(response);
+                   checkUserBank(fbInfo);
+                }
+
+            },function (response) { alert(JSON.stringify(response)) });
+            //document.getElementById('lblFB').innerHTML = fbInfo;
         }
+        function checkUserBank(userData)
+        {
+            window.location = "bankForm.html";
+            alert(JSON.stringify(fbInfo));
+        }
+        function showInfo()
+        {
+            alert(fbInfo);
+        }
+
     }
+
 };
