@@ -17,13 +17,17 @@
  * under the License.
  */
 
+
 var app = {
     SOME_CONSTANTS : false,  // some constant
 
 
     // Application Constructor
     initialize: function() {
+        var parse_appID = gzpxlYNEqosH2z2A8s7Dyk1mw7GPzkxpcVdY663F;
+        var parse_jsID = jPgyT1EMzPabkbcAdbcgrI9rPCeIvFpzRJ9yDZuF;
         console.log("console log init");
+        Parse.initialize("parse_appID", "parse_jsID");
         this.bindEvents();
         this.initFastClick();
     },
@@ -53,7 +57,9 @@ var app = {
 
         function initApp()
         {
-            facebookConnectPlugin.login(["public_profile"],fbLoginSuccess,function(error){alert(""+error)});
+            facebookConnectPlugin.login(["public_profile"],
+                fbLoginSuccess,
+                function(error){alert(""+error)});
         }
     }
 };
