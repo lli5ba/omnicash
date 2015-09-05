@@ -23,6 +23,9 @@ var app = {
 
     // Application Constructor
     initialize: function() {
+        var appID = gzpxlYNEqosH2z2A8s7Dyk1mw7GPzkxpcVdY663F;
+        var jsID = jPgyT1EMzPabkbcAdbcgrI9rPCeIvFpzRJ9yDZuF;
+        Parse.initialize(appID, jsID);
         console.log("console log init");
         this.bindEvents();
         this.initFastClick();
