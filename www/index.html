@@ -18,7 +18,7 @@
                             <img src="img/logo.png" id="logo"  />
                         </div>
                     <div id="menu">
-                        <a data-icon="flat-heart" data-theme="d" id="login" data-role="button">Login with Facebook</a>
+                        <a data-theme="f" id="login" data-role="button">Login with Facebook</a>
                     </div>
                 </div>
             </div><!-- /page  -->
@@ -29,11 +29,24 @@
                 </div>
                 <div data-role="content" >
                     <div id="bankForm">
+                        <label for="username">Username</label>
+                        <input type="text" name="user name" id="username" placeholder="Enter a username"/>
                         <label for="account-number">Account Number</label>
                         <input type="text" name="accnum" id="account-number" placeholder="unique to your bank account ex. 987654321"/>
                         <label for="routing-number">Routing Number</label>
                         <input type="text" name="routnum" id="routing-number" placeholder="9 digit bank code ex. 123456789"/>
                         <a id="submitinfo" data-theme="f" data-role="button">Add</a>
+                    </div>
+                </div>
+            </div>
+            <div  id="havecash-needcash" data-role="page">
+                    <h1 id="welcomeheader">Welcome!</h1>
+                <div data-role="content" >
+                    <div id="HaveCashNeedCash">
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a"> <a data-icon="ms-question" data-theme="f" data-role="button">Have Cash</a></div>
+                            <div class="ui-block-b"><a data-icon="ms-question" data-theme="f"  data-role="button" >Need Cash</a></div>
+                        </fieldset>
                     </div>
                 </div>
             </div>

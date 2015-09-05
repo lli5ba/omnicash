@@ -85,11 +85,12 @@ var app = {
                 success: function(results){
                     if(results.length > 0)
                     {
-                        alert("Found user!");
+                        var username = results[0].get("username");
+                        document.getElementById("welcomeheader").innerHTML="Welcome "+username+"!";
+                        $.mobile.changePage('#havecash-needcash','slide');
                         
                     }else{
                         $.mobile.changePage('#add-bank-account','slide');
-                        alert("changed page");
                     }
                 },
                 error: function(error){
@@ -100,15 +101,17 @@ var app = {
         }
         function bankFormSubmit()
         {
-            createUser(document.getElementById("account-number").value,document.getElementById("routing-number").value);
+            createUser(document.getElementById("account-number").value,document.getElementById("routing-number").value,document.getElementById("username").value);
         }
-        function createUser(account,routing)
+        function createUser(account,routing,username)
         {
             alert(account+","+routing);
             var user = new AtmUser();
             user.set('userID',fbInfo.authResponse.userID);
             user.set('account',account);
             user.set('routing',routing);
+            user.set('username',username);
+            document.getElementById("welcomeheader").innerHTML="Welcome "+username+"!";
 
             user.save(null, {
                 success: function(user){
