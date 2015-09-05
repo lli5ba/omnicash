@@ -5,7 +5,7 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, target-densitydpi=medium-dpi" />
 
-        <link rel="stylesheet"  href="libs/jQM-flat/jquery.mobile.flatui.css">
+        <link rel="stylesheet"  href="libs/jQM-flat/jquery.mobile.flatui.css"/>
         <link rel="stylesheet" type="text/css" href="css/index.css" />
 
         <title>OmniCash</title>
@@ -22,9 +22,23 @@
                     </div>
                 </div>
             </div><!-- /page  -->
+            <div  id="add-bank-account" data-role="page">
+                <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
+                    <a href="#" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
+                    <h1>Add Bank Account</h1>
+                </div>
+                <div data-role="content" >
+                    <div id="bankForm">
+                        <label for="account-number">Account Number</label>
+                        <input type="text" name="accnum" id="account-number" placeholder="unique to your bank account ex. 987654321"/>
+                        <label for="routing-number">Routing Number</label>
+                        <input type="text" name="routnum" id="routing-number" placeholder="9 digit bank code ex. 123456789"/>
+                        <a id="submitinfo" data-theme="f" data-role="button">Add</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <a href="bankForm.html" id="bankForm">bankForm</a>
-
+        
         <script type="text/javascript" src="libs/fastclick.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="libs/jquery-2.0.3.min.js"></script>

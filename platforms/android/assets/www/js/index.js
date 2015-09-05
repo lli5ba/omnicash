@@ -49,7 +49,8 @@ var app = {
         //alert("test");
         initApp();
         var AtmUser = Parse.Object.extend("AtmUser");
-        document.getElementById("login").addEventListener("click", initApp, false);      
+        document.getElementById("login").addEventListener("click", initApp, false); 
+        document.getElementById("submitinfo").addEventListener("click",bankFormSubmit,false);     
         var fbInfo;
         var fbLoginSuccess = function(userData)
         {
@@ -85,8 +86,10 @@ var app = {
                     if(results.length > 0)
                     {
                         alert("Found user!");
+                        
                     }else{
-                        window.location = "bankForm.html";
+                        $.mobile.changePage('#add-bank-account','slide');
+                        alert("changed page");
                     }
                 },
                 error: function(error){
@@ -95,8 +98,13 @@ var app = {
 
             });
         }
+        function bankFormSubmit()
+        {
+            createUser(document.getElementById("account-number").value,document.getElementById("routing-number").value);
+        }
         function createUser(account,routing)
         {
+            alert(account+","+routing);
             var user = new AtmUser();
             user.set('userID',fbInfo.authResponse.userID);
             user.set('account',account);
@@ -104,7 +112,7 @@ var app = {
 
             user.save(null, {
                 success: function(user){
-
+                    alert("Successfully saved user!");
                 },
                 error: function(user, error){
                     alert(error.message);
