@@ -40,20 +40,51 @@ var app = {
         }, false);
     },
     // Phonegap is now ready...
+
     onDeviceReady: function() {
         console.log("device ready, start making you custom calls!");
-
-        // Start adding your code here....
-        document.addEventListener('deviceready', initApp, false);
-
+        initApp();
+        document.getElementById("infoButton").addEventListener("click", showInfo, false);
+        document.getElementById("login").addEventListener("click", initApp, false);      
+        var fbInfo;
         var fbLoginSuccess = function(userData)
         {
             alert("UserInfo: " + JSON.stringify(userData));
+            fbInfo = JSON.stringify(userData);
+            //document.getElementById('lblFB').innerHTML = fbInfo;
         }
 
         function initApp()
         {
-            facebookConnectPlugin.login(["public_profile"],fbLoginSuccess,function(error){alert(""+error)});
+            try{
+            //facebookConnectPlugin.login(["public_profile"],fbLoginSuccess,function(error){alert("Error: "+error)});
+            }catch(e)
+            {
+                alert(e);
+            }
+
+            facebookConnectPlugin.getLoginStatus(function (response) {
+
+                if (response.status !== 'connected') {
+                    facebookConnectPlugin.login( ["public_profile"],
+                    fbLoginSuccess,
+                    function (response) { alert(JSON.stringify(response)) });
+                } else {
+                   fbInfo = JSON.stringify(response);
+                }
+
+            },function (response) { alert(JSON.stringify(response)) });
+            //document.getElementById('lblFB').innerHTML = fbInfo;
         }
+        function alertDismissed()
+        {
+
+        }
+        function showInfo()
+        {
+            alert(fbInfo);
+        }
+
     }
+
 };

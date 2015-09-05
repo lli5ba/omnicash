@@ -17,5 +17,13 @@
             "APP_ID": "163727293963753",
             "APP_NAME": "OmniCash"
         }
+    },
+    "org.apache.cordova.dialogs": {
+        "source": {
+            "type": "registry",
+            "id": "org.apache.cordova.dialogs"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
