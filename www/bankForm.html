@@ -11,14 +11,22 @@
         <title>OmniCash</title>
     </head>
     <body>
-        <div id="linkForm">
-            <div id="home-page" data-role="page">
-                <div data-role="content" >
-                    <div id="form">
-                        <a data-icon="flat-heart" data-theme="d" id="link" data-role="button">Link</a>
-                    </div>
+        <div id="addForm">
+            <div  id="add-bank-account" data-role="page">
+                <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
+                    <a href="#" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
+                    <h1>Add Bank Account</h1>
                 </div>
-            </div><!-- /page  -->
+                <div data-role="content" >
+                    <form  id="bank-account-form" action="">
+                        <label for="account-number">Account Number</label>
+                        <input type="text" name="accnum" id="account-number" placeholder="unique to your bank account ex. 987654321"/>
+                        <label for="routing-number">Routing Number</label>
+                        <input type="text" name="routnum" id="routing-number" placeholder="9 digit bank code ex. 123456789"/>
+                        <button type="Add" data-theme="f" data-mini="false" class="ui-btn-hidden" aria-disabled="false">Add</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <script type="text/javascript" src="libs/fastclick.min.js"></script>
