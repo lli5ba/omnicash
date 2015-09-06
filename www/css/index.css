@@ -78,7 +78,7 @@ margin: .8em 30% .8em;
    
 }*/
 .big-text{
-    font-size: 1.3em;
+    font-size: 1.3em !important;
 }
 .small-text{
     font-size:0.8em;
@@ -93,6 +93,37 @@ margin: .8em 30% .8em;
     cursor: pointer;
     text-decoration: none;
   font-family: Lato, sans-serif
+}
+
+#centerMenu{
+    position: absolute;
+    top: 25%;
+    margin: 0 auto;
+    width:90%;
+    height:75%;
+    font-size: 250% !important;
+}
+
+#amountDisplay{
+    margin-top: 25%;
+    font-size: 300%;
+    text-align: center;
+}
+#amountSelector{
+    text-align: center;
+}
+#centerMenu a[type="centered"]{
+    /*width: 100%;
+    margin: auto;
+    height: 100%;
+    margin-bottom: 10%;
+    padding 0;
+    margin-top: 10%;*/
+    text-align: center;
+    line-height: 100px;
+    height: 25%;
+    font-size: 250% !important;
+    
 }
 
 

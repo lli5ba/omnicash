@@ -49,9 +49,13 @@ var app = {
         //alert("test");
         initApp();
         var AtmUser = Parse.Object.extend("AtmUser");
+        var ncTransaction = Parse.Object.extend("ncTransaction");
         document.getElementById("login").addEventListener("click", initApp, false); 
-        document.getElementById("submitinfo").addEventListener("click",bankFormSubmit,false);     
+        document.getElementById("submitinfo").addEventListener("click",bankFormSubmit,false); 
+        document.getElementById("NeedCash").addEventListener("click",needCashCreate,false);    
+        document.getElementById("ncAmountAccept").addEventListener("click",ncAmountAccept,false);   
         var fbInfo;
+        var username;
         var fbLoginSuccess = function(userData)
         {
             fbInfo = userData;
@@ -79,13 +83,14 @@ var app = {
         function checkUserBank()
         {
             localStorage.setItem("userID",fbInfo.authResponse.userID);
+            localStorage.setItem("name", fbInfo.name);
             var userQuery = new Parse.Query(AtmUser);
             userQuery.equalTo("userID",fbInfo.authResponse.userID);
             userQuery.find({
                 success: function(results){
                     if(results.length > 0)
                     {
-                        var username = results[0].get("username");
+                        username = results[0].get("username");
                         document.getElementById("welcomeheader").innerHTML="Welcome "+username+"!";
                         $.mobile.changePage('#havecash-needcash','slide');
                         
@@ -101,7 +106,7 @@ var app = {
         }
         function bankFormSubmit()
         {
-            createUser(document.getElementById("account-number").value,document.getElementById("routing-number").value,document.getElementById("username").value);
+            createUser(document.getElementById("account-number").value,document.getElementById("routing-number").value,document.getElementById("usern").value);
         }
         function createUser(account,routing,username)
         {
@@ -110,7 +115,8 @@ var app = {
             user.set('userID',fbInfo.authResponse.userID);
             user.set('account',account);
             user.set('routing',routing);
-            user.set('username',username);
+            user.set('username',usern);
+            username = usern;
             document.getElementById("welcomeheader").innerHTML="Welcome "+username+"!";
 
             user.save(null, {
@@ -121,6 +127,56 @@ var app = {
                     alert(error.message);
                 }
             });
+        }
+        function needCashCreate()
+        {
+            $.mobile.changePage('#needcashamount','slide');
+        }
+        function ncAmountAccept()
+        {
+            $.mobile.changePage('#needcashview','slide');
+
+            var transaction = new ncTransaction();
+            var amount = document.getElementById("ncslider").value;
+            transaction.set("amount",amount);
+            transaction.set("ncID",fbInfo.authResponse.userID);
+            transaction.set("ncUser",username);
+
+            var transactionQuery = new Parse.Query(ncTransaction);
+            transactionQuery.equalTo("ncID",fbInfo.authResponse.userID);
+            var needNewTransaction = true;
+            transactionQuery.find({
+                success: function(results){
+                    for(var x = 0; x < results.length; x++)
+                    {
+                        if(results[x].get("amount") === amount)
+                        {
+                            needNewTransaction = false;
+                        }else{
+                            results[x].destroy({
+                             success: function(obj){},
+                             error: function(obj,error){alert(error.message)}
+                            });
+                        }
+                    }
+                },
+                error: function(error){
+                    alert(error.message);
+                }
+
+            });
+            if(needNewTransaction)
+            {
+                transaction.save(null, {
+                    success: function(user){
+                        alert("Successfully saved transaction!");
+                    },
+                    error: function(user, error){
+                        alert(error.message);
+                    }
+                });
+            }
+
         }
 
     }

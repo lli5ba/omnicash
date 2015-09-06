@@ -41,13 +41,35 @@
             </div>
             <div  id="havecash-needcash" data-role="page">
                     <h1 id="welcomeheader">Welcome!</h1>
-                <div data-role="content" >
-                    <div id="HaveCashNeedCash">
-                        <fieldset class="ui-grid-a">
-                            <div class="ui-block-a"> <a data-icon="ms-question" data-theme="f" data-role="button">Have Cash</a></div>
-                            <div class="ui-block-b"><a data-icon="ms-question" data-theme="f"  data-role="button" >Need Cash</a></div>
-                        </fieldset>
+                <div data-role="content" id="hcnc-content" >
+                    <div id="centerMenu">
+                        <a id="HaveCash" data-theme="f" data-role="button" type="centered">Have Cash</a>
+                        <a id="NeedCash" data-theme="f" data-role="button" type="centered">Need Cash</a>
                     </div>
+                </div>
+            </div>
+            <div id="needcashamount" data-role="page">
+                <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
+                    <a href="#" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
+                    <h1>Need Cash</h1>
+                </div>
+                 <div id = "amountDisplay" data-role = "content">
+                        Select Amount
+                </div>
+                <div id = "amountSelector" data-role="content">
+                    <input type="range" name="needCashSlider" id="ncslider" value="5" min="5" max="100"/>
+                </div>
+                <div id = "amountAccept" data-role="content">
+                    <a id="ncAmountAccept" data-theme="f" data-role="button" type="centered">Accept</a>
+                </div>
+            </div>
+            <div id="needcashview" data-role="page">
+                <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
+                    <a href="#havecash-needcash" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
+                    <h1>Transactions</h1>
+                </div>
+                 <div id = "Transaction Display" data-role = "content">
+                        Select Amount
                 </div>
             </div>
         </div>
