@@ -40,7 +40,11 @@
                 </div>
             </div>
             <div  id="havecash-needcash" data-role="page">
-                    <h1 id="welcomeheader">Welcome!</h1>
+                <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
+                    <a href="#havecash-needcash" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
+                    <h1></h1>
+                </div>
+                <h1 id="welcomeheader">Welcome!</h1>
 
                 <div data-role="content" id="hcnc-content" >
                     <div id="centerMenu">
@@ -50,24 +54,24 @@
                 </div>
             </div>
             <div  id="have_cash" data-role="page">
-                <div class="ui-grid-solo">
-                    <div class="ui-block-a"><h2>Have Cash? How much?</h2></div>
+                <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
+                    <a href="#havecash-needcash" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
+                    <h1>Have Cash</h1>
                 </div>
 
-                <div data-role="content" >
-                    <div class="ui-grid-a">
-                    <div class="ui-block-a"> I have: </div>
-                    <div class="ui-block-b">
+                <div data-role="content" id="hcgridholder">
+                    <h2 id="billinfo"> How much? </h2>
+                    <div class="ui-grid-a" id="hcgrid">
                         <div class="ui-grid-d">
-                            <div class="ui-block-a"><input type="number" name="bill_1" id="bill_1" value="0"  />
+                            <div class="ui-block-a"><input type="number" name="_bill_1" id="bill_1" value="0"  />
                                 </div>
-                            <div class="ui-block-b"><input type="number" name="bill_5" id="bill_5" value="0"  />
+                            <div class="ui-block-b"><input type="number" name="_bill_5" id="bill_5" value="0"  />
                                 </div>
-                            <div class="ui-block-c"><input type="number" name="bill_10" id="bill_10" value="0"  />
+                            <div class="ui-block-c"><input type="number" name="_bill_10" id="bill_10" value="0"  />
                                 </div>
-                            <div class="ui-block-d"><input type="number" name="bill_20" id="bill_20" value="0"  />
+                            <div class="ui-block-d"><input type="number" name="_bill_20" id="bill_20" value="0"  />
                                 </div>
-                            <div class="ui-block-e"><input type="number" name="bill_50" id="bill_50" value="0"  />
+                            <div class="ui-block-e"><input type="number" name="_bill_50" id="bill_50" value="0"  />
                                 </div>
 
                             <div class="ui-block-a"><img src="img/OmniCashAppBill1.png"/>
@@ -82,14 +86,13 @@
                             </div>
                         </div>
                     </div>
-                    </div>
                     <a id="havecashsubmitbutton" data-theme="f" data-role="button">Find Matches</a>
                 </div>
-                </div>
+            </div>    
 
             <div id="needcashamount" data-role="page">
                 <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
-                    <a href="#" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
+                    <a href="#havecash-needcash" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
                     <h1>Need Cash</h1>
                 </div>
                  <div id = "amountDisplay" data-role = "content">

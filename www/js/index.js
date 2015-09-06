@@ -49,7 +49,6 @@ var app = {
         //alert("test");
         initApp();
         var AtmUser = Parse.Object.extend("AtmUser");
-
         var hcTransaction = Parse.Object.extend("hcTransaction");
         var ncTransaction = Parse.Object.extend("ncTransaction");
         document.getElementById("login").addEventListener("click", initApp, false);
@@ -111,6 +110,11 @@ var app = {
             });
         }
 
+        function processTransaction(nc,hc)
+        {
+
+        }
+
         function bankFormSubmit() {
             createUser(document.getElementById("account-number").value, document.getElementById("routing-number").value, document.getElementById("usern").value);
         }
@@ -139,7 +143,8 @@ var app = {
         }
 
         function haveCashSubmit() {
-            createHc_Transaction(document.getElementById("bill_1").value,
+            //$.mobile.changePage('#havecashview', 'slide');
+            createHcTransaction(document.getElementById("bill_1").value,
                 document.getElementById("bill_5").value, document.getElementById("bill_10").value,
                 document.getElementById("bill_20").value, document.getElementById("bill_50").value);
 
@@ -156,14 +161,52 @@ var app = {
             hc.set('bill_10', bill_10);
             hc.set('bill_20', bill_20);
             hc.set('bill_50', bill_50);
+            var hcQuery = new Parse.Query(hcTransaction);
+            hcQuery.equalTo("hcID", fbInfo.authResponse.userID);
+            var hcBool = true;
+            hcQuery.find({
+                success: function (results) {
 
-            hc.save(null, {
-                success: function (hc) {
-                    alert("Successfully saved request!");
+                    for (var x = 0; x < results.length; x++) {
+                        if (results[x].get("bill_1") === bill_1 && results[x].get("bill_5") === bill_5 && results[x].get("bill_10") === bill_10 && results[x].get("bill_20") === bill_20 && results[x].get("bill_50") === bill_50) {
+                            hcBool = false;
+                        } else {
+                            results[x].destroy({
+                                success: function (obj) {
+                                },
+                                error: function (obj, error) {
+                                    alert(error.message)
+                                }
+                            });
+                        }
+                    }
+                    if(hcBool)
+                    {
+                    hc.save(null, {
+                            success: function(user){
+                                
+                            },
+                            error: function(user, error){
+                                alert(error.message);
+                            }
+                        });
+                    }
+                    var ncQuery = new Parse.Query(ncTransaction);
+                    ncQuery.equalTo("ncID",fbInfo.authResponse.userID);
+                    ncQuery.find({
+                        success: function(results){
+                            for(var i = 0; i < results.length; i++)
+                           {
+                             results[i].destroy({success: function(obj){},error: function(obj,error){alert(error.message)}});
+                            }
+                        },error: function(error){alert(error.message)}
+                    });
+
                 },
-                error: function (hc, error) {
+                error: function (error) {
                     alert(error.message);
                 }
+
             });
         }
 
@@ -176,19 +219,23 @@ var app = {
         }
 
         function ncAmountAccept() {
-            $.mobile.changePage('#needcashview', 'slide');
+            //$.mobile.changePage('#needcashview', 'slide');
 
             var transaction = new ncTransaction();
             var amount = document.getElementById("ncslider").value;
             transaction.set("amount", amount);
             transaction.set("ncID", fbInfo.authResponse.userID);
             transaction.set("ncUser", username);
+            transaction.set("hcID",null);
+            transaction.set("hcUser",null);
 
             var transactionQuery = new Parse.Query(ncTransaction);
             transactionQuery.equalTo("ncID", fbInfo.authResponse.userID);
             var needNewTransaction = true;
+
             transactionQuery.find({
                 success: function (results) {
+
                     for (var x = 0; x < results.length; x++) {
                         if (results[x].get("amount") === amount) {
                             needNewTransaction = false;
@@ -213,6 +260,18 @@ var app = {
                             }
                         });
                     }
+
+                    var zhcQuery = new Parse.Query(hcTransaction);
+                    zhcQuery.equalTo("hcID",fbInfo.authResponse.userID);
+                    zhcQuery.find({
+                        success: function(results){
+                            for(var i = 0; i < results.length; i++)
+                            {
+                               results[i].destroy({success: function(obj){},error: function(obj,error){alert("error.message")}});
+                            }
+                         },error: function(error){alert(error.message)}
+                    });
+
                 },
                 error: function (error) {
                     alert(error.message);
