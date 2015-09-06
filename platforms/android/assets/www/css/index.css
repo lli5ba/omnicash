@@ -23,6 +23,8 @@ body {
     margin:0px;
     padding:0px;
     width:100%;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
 }
 
 
@@ -51,8 +53,9 @@ margin: .8em 30% .8em;
 /* home page */
 
 #logo{
-    width:70%;
-    max-width:206px;
+    width: 90%;
+    height: 75%;
+    max-width:300px;
     margin:35px 0 40px;
 }
 .centerText{
@@ -132,6 +135,36 @@ margin: .8em 30% .8em;
     height: 25%;
     font-size: 250% !important;
     
+}
+#hcgrid{
+    position: absolute;
+    width: 125%;
+    height: 125%;
+    left: 20%;
+    top: 25%;
+    margin:; 0 auto;
+    text-align: center;
+}
+
+#hcgridholder a{
+    position: absolute;
+    width: 90%;
+    height: 10%;
+    top: 50%;
+}
+
+#welcomeheader{
+    width: 90%;
+    height: 10%;
+    position: absolute;
+    top: 15%;
+}
+#billinfo{
+    width: 90%;
+    height: 10%;
+    position: absolute;
+    top: 15%;
+    text-align: center;
 }
 
 
