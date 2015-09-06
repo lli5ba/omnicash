@@ -49,8 +49,11 @@ var app = {
         //alert("test");
         initApp();
         var AtmUser = Parse.Object.extend("AtmUser");
+        var hcTransaction = Parse.Object.extend("hcTransaction");
         document.getElementById("login").addEventListener("click", initApp, false); 
-        document.getElementById("submitinfo").addEventListener("click",bankFormSubmit,false);     
+        document.getElementById("submitinfo").addEventListener("click",bankFormSubmit,false);
+        document.getElementById("HaveCash").addEventListener("click",haveCash,false);
+        document.getElementById("havecashsubmitbutton").addEventListener("click",haveCashSubmit,false);
         var fbInfo;
         var fbLoginSuccess = function(userData)
         {
@@ -79,6 +82,7 @@ var app = {
         function checkUserBank()
         {
             localStorage.setItem("userID",fbInfo.authResponse.userID);
+            localStorage.setItem("name", fbInfo.name);
             var userQuery = new Parse.Query(AtmUser);
             userQuery.equalTo("userID",fbInfo.authResponse.userID);
             userQuery.find({
@@ -122,6 +126,37 @@ var app = {
                 }
             });
         }
+        function haveCash(){
+            $.mobile.changePage('#have_cash','slide');
+        }
+        function haveCashSubmit() {
+            createHc_Transaction(document.getElementById("bill_1").value,
+                document.getElementById("bill_5").value, document.getElementById("bill_10").value,
+                document.getElementById("bill_20").value, document.getElementById("bill_50").value);
+
+        }
+        function createHcTransaction(bill_1, bill_5, bill_10, bill_20, bill_50){
+            var hc = new hcTransaction();
+            hc.set('hcID',fbInfo.authResponse.userID);
+            hc.set('ncID', null);
+            hc.set('hcUser', username);
+            hc.set('ncUser', null);
+            hc.set('bill_1',bill_1);
+            hc.set('bill_5',bill_5);
+            hc.set('bill_10',bill_10);
+            hc.set('bill_20',bill_20);
+            hc.set('bill_50',bill_50);
+
+            hc.save(null, {
+                success: function(hc){
+                    alert("Successfully saved request!");
+                },
+                error: function(hc, error){
+                    alert(error.message);
+                }
+            });
+        }
+
 
     }
 

@@ -32,9 +32,9 @@
                         <label for="username">Username</label>
                         <input type="text" name="user name" id="username" placeholder="Enter a username"/>
                         <label for="account-number">Account Number</label>
-                        <input type="text" name="accnum" id="account-number" placeholder="unique to your bank account ex. 987654321"/>
+                        <input type="number" name="accnum" id="account-number" placeholder="unique to your bank account ex. 987654321"/>
                         <label for="routing-number">Routing Number</label>
-                        <input type="text" name="routnum" id="routing-number" placeholder="9 digit bank code ex. 123456789"/>
+                        <input type="number" name="routnum" id="routing-number" placeholder="9 digit bank code ex. 123456789"/>
                         <a id="submitinfo" data-theme="f" data-role="button">Add</a>
                     </div>
                 </div>
@@ -44,10 +44,51 @@
                 <div data-role="content" >
                     <div id="HaveCashNeedCash">
                         <fieldset class="ui-grid-a">
-                            <div class="ui-block-a"> <a data-icon="ms-question" data-theme="f" data-role="button">Have Cash</a></div>
-                            <div class="ui-block-b"><a data-icon="ms-question" data-theme="f"  data-role="button" >Need Cash</a></div>
+                            <div class="ui-block-a">
+                                <a data-icon="ms-question" id="HaveCash" data-theme="f" data-role="button">Have Cash</a>
+                            </div>
+                            <div class="ui-block-b">
+                                <a data-icon="ms-question" id="NeedCash" data-theme="f"  data-role="button" >Need Cash</a>
+                            </div>
                         </fieldset>
                     </div>
+                </div>
+            </div>
+            <div  id="have_cash" data-role="page">
+                <div class="ui-grid-solo">
+                    <div class="ui-block-a"><h2>Have Cash? How much?</h2></div>
+                </div>
+
+                <div data-role="content" >
+                    <div class="ui-grid-a">
+                    <div class="ui-block-a"> I have: </div>
+                    <div class="ui-block-b">
+                        <div class="ui-grid-d">
+                            <div class="ui-block-a"><input type="number" name="bill_1" id="bill_1" value="0"  />
+                                </div>
+                            <div class="ui-block-b"><input type="number" name="bill_5" id="bill_5" value="0"  />
+                                </div>
+                            <div class="ui-block-c"><input type="number" name="bill_10" id="bill_10" value="0"  />
+                                </div>
+                            <div class="ui-block-d"><input type="number" name="bill_20" id="bill_20" value="0"  />
+                                </div>
+                            <div class="ui-block-e"><input type="number" name="bill_50" id="bill_50" value="0"  />
+                                </div>
+
+                            <div class="ui-block-a"><img src="img/OmniCashAppBill1.png"/>
+                            </div>
+                            <div class="ui-block-b"><img src="img/OmniCashAppBill5.png"/>
+                            </div>
+                            <div class="ui-block-c"><img src="img/OmniCashAppBill10.png"/>
+                            </div>
+                            <div class="ui-block-d"><img src="img/OmniCashAppBill20.png"/>
+                            </div>
+                            <div class="ui-block-e"><img src="img/OmniCashAppBill50.png"/>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <a id="havecashsubmitbutton" data-theme="f" data-role="button">Find Matches</a>
                 </div>
             </div>
         </div>
