@@ -142,24 +142,31 @@ var app = {
             $.mobile.changePage('#have_cash', 'slide');
         }
 
+
         function haveCashSubmit() {
-            var hc = createHc_Transaction(document.getElementById("bill_1").value,
+            var hc = createHcTransaction(document.getElementById("bill_1").value,
                 document.getElementById("bill_5").value, document.getElementById("bill_10").value,
                 document.getElementById("bill_20").value, document.getElementById("bill_50").value);
             $.mobile.changePage('#havecashview', 'slide');
-            var matches = getNcTrasactionList(hc);
-            for(var i = 0; i < matches.length; i++) {
-                var usern = matches[i].get("username");
-                var userID = matches[i].get("userID")
-                var listelement = "<li><a id='" + userID + "' data-theme='f'>" + usern +
-                "<img src='http://graph.facebook.com/" + userID + "/picture?type=square'/></a></li>";
-                $(listelement).appendTo("#matchlist")
+            getNcTranscationList(hc);
+
+
                 //http://graph.facebook.com/67563683055/picture?type=square
-            }
 
 
         }
 
+        function updateMatchList(matches){
+            for (var i = 0; i < matches.length; i++) {
+                var usern = matches[i].get("ncUser");
+                var userID = matches[i].get("ncID");
+                var listelement = "<li><a id='" + userID + "' data-theme='f'>" + usern +
+                   "<img src='http://graph.facebook.com/" + userID + "/picture?type=square'/></a></li>";
+                //var listelement = "<li><a id='userID' data-theme='f'>usern " +
+                  //  "<img src='http://graph.facebook.com/userID/picture?type=square'/></a></li>";
+                $(listelement).appendTo("#matchlist")
+                }
+        }
         function createHcTransaction(bill_1, bill_5, bill_10, bill_20, bill_50) {
             var hc = new hcTransaction();
             hc.set('hcID', fbInfo.authResponse.userID);
@@ -194,7 +201,6 @@ var app = {
                     {
                     hc.save(null, {
                             success: function(user){
-                                
                             },
                             error: function(user, error){
                                 alert(error.message);
@@ -228,17 +234,21 @@ var app = {
             var bill_20 = hc_transaction.get("bill_20");
             var bill_50 = hc_transaction.get("bill_50");
             var ncTransactions = new Parse.Query(ncTransaction);
-            var matchesFound = [];
+
             ncTransactions.find({
                 success: function(results) {
                     // results is an array of Parse.Object.
-                    for(var i = 0; results.length; i++){
+                    var matchesFound = [];
+                    for(var i = 0; i < results.length; i++){
+                        alert("From for loop results: " + JSON.stringify(results[i]));
                         var amount = results[i].get("amount");
                         var compatible = checkCompatibility(amount,bill_1, bill_5, bill_10, bill_20, bill_50);
                         if (compatible){
                             matchesFound.push(results[i]);
+                            alert(matchesFound)
                         }
                     }
+                    updateMatchList(matchesFound);
                 },
 
                 error: function(error) {
@@ -248,26 +258,28 @@ var app = {
         }
 
         function checkCompatibility(amount,bill_1, bill_5, bill_10, bill_20, bill_50){
+            alert("made it to compatibile")
             var compatible = false;
             var stack = [];
-            for(var i = 0; i < bill_1; i++) {
-                stack.push(1);
-            }
-            for(var i = 0; i < bill_5; i++) {
-                stack.push(5);
-            }
-            for(var i = 0; i < bill_10; i++) {
-                stack.push(10);
+            for(var i = 0; i < bill_50; i++) {
+                stack.push(50);
             }
             for(var i = 0; i < bill_20; i++) {
                 stack.push(20);
             }
             for(var i = 0; i < bill_10; i++) {
-                stack.push(100);
+                stack.push(10);
             }
+            for(var i = 0; i < bill_5; i++) {
+                stack.push(5);
+            }
+            for(var i = 0; i < bill_1; i++) {
+                stack.push(1);
+            }
+
             while(stack.length > 0) {
                 var top = stack.pop();
-                if(top < amount){
+                if(top <= amount){
                     amount = amount - top;
                 }
             }
