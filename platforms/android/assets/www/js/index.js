@@ -49,115 +49,179 @@ var app = {
         //alert("test");
         initApp();
         var AtmUser = Parse.Object.extend("AtmUser");
+
         var hcTransaction = Parse.Object.extend("hcTransaction");
-        document.getElementById("login").addEventListener("click", initApp, false); 
-        document.getElementById("submitinfo").addEventListener("click",bankFormSubmit,false);
-        document.getElementById("HaveCash").addEventListener("click",haveCash,false);
-        document.getElementById("havecashsubmitbutton").addEventListener("click",haveCashSubmit,false);
+        var ncTransaction = Parse.Object.extend("ncTransaction");
+        document.getElementById("login").addEventListener("click", initApp, false);
+        document.getElementById("submitinfo").addEventListener("click", bankFormSubmit, false);
+        document.getElementById("HaveCash").addEventListener("click", haveCash, false);
+        document.getElementById("havecashsubmitbutton").addEventListener("click", haveCashSubmit, false);
+        document.getElementById("NeedCash").addEventListener("click", needCashCreate, false);
+        document.getElementById("ncAmountAccept").addEventListener("click", ncAmountAccept, false);
+
         var fbInfo;
-        var fbLoginSuccess = function(userData)
-        {
+        var username;
+        var fbLoginSuccess = function (userData) {
             fbInfo = userData;
             checkUserBank();
             //document.getElementById('lblFB').innerHTML = fbInfo;
         }
 
-        function initApp()
-        {
+        function initApp() {
 
             facebookConnectPlugin.getLoginStatus(function (response) {
 
                 if (response.status !== 'connected') {
-                    facebookConnectPlugin.login( ["public_profile"],
-                    fbLoginSuccess,
-                    function (response) { alert(JSON.stringify(response)) });
+                    facebookConnectPlugin.login(["public_profile"],
+                        fbLoginSuccess,
+                        function (response) {
+                            alert(JSON.stringify(response))
+                        });
                 } else {
-                   fbInfo = response;
-                   checkUserBank();
+                    fbInfo = response;
+                    checkUserBank();
                 }
 
-            },function (response) { alert(JSON.stringify(response)) });
+            }, function (response) {
+                alert(JSON.stringify(response))
+            });
             //document.getElementById('lblFB').innerHTML = fbInfo;
         }
-        function checkUserBank()
-        {
-            localStorage.setItem("userID",fbInfo.authResponse.userID);
+
+        function checkUserBank() {
+            localStorage.setItem("userID", fbInfo.authResponse.userID);
             localStorage.setItem("name", fbInfo.name);
             var userQuery = new Parse.Query(AtmUser);
-            userQuery.equalTo("userID",fbInfo.authResponse.userID);
+            userQuery.equalTo("userID", fbInfo.authResponse.userID);
             userQuery.find({
-                success: function(results){
-                    if(results.length > 0)
-                    {
-                        var username = results[0].get("username");
-                        document.getElementById("welcomeheader").innerHTML="Welcome "+username+"!";
-                        $.mobile.changePage('#havecash-needcash','slide');
-                        
-                    }else{
-                        $.mobile.changePage('#add-bank-account','slide');
+                success: function (results) {
+                    if (results.length > 0) {
+                        username = results[0].get("username");
+                        document.getElementById("welcomeheader").innerHTML = "Welcome " + username + "!";
+                        $.mobile.changePage('#havecash-needcash', 'slide');
+
+                    } else {
+                        $.mobile.changePage('#add-bank-account', 'slide');
                     }
                 },
-                error: function(error){
+                error: function (error) {
                     alert(error.message);
                 }
 
             });
         }
-        function bankFormSubmit()
-        {
-            createUser(document.getElementById("account-number").value,document.getElementById("routing-number").value,document.getElementById("username").value);
+
+        function bankFormSubmit() {
+            createUser(document.getElementById("account-number").value, document.getElementById("routing-number").value, document.getElementById("usern").value);
         }
-        function createUser(account,routing,username)
-        {
-            alert(account+","+routing);
+
+        function createUser(account, routing, username) {
+            alert(account + "," + routing);
             var user = new AtmUser();
-            user.set('userID',fbInfo.authResponse.userID);
-            user.set('account',account);
-            user.set('routing',routing);
-            user.set('username',username);
-            document.getElementById("welcomeheader").innerHTML="Welcome "+username+"!";
+            user.set('userID', fbInfo.authResponse.userID);
+            user.set('account', account);
+            user.set('routing', routing);
+            user.set('username', usern);
+            username = usern;
+            document.getElementById("welcomeheader").innerHTML = "Welcome " + username + "!";
 
             user.save(null, {
-                success: function(user){
+                success: function (user) {
                     alert("Successfully saved user!");
                 },
-                error: function(user, error){
+                error: function (user, error) {
                     alert(error.message);
                 }
             });
         }
-        function haveCash(){
-            $.mobile.changePage('#have_cash','slide');
+
+        function haveCash() {
+            $.mobile.changePage('#have_cash', 'slide');
         }
+
         function haveCashSubmit() {
             createHc_Transaction(document.getElementById("bill_1").value,
                 document.getElementById("bill_5").value, document.getElementById("bill_10").value,
                 document.getElementById("bill_20").value, document.getElementById("bill_50").value);
 
         }
-        function createHcTransaction(bill_1, bill_5, bill_10, bill_20, bill_50){
+
+        function createHcTransaction(bill_1, bill_5, bill_10, bill_20, bill_50) {
             var hc = new hcTransaction();
-            hc.set('hcID',fbInfo.authResponse.userID);
+            hc.set('hcID', fbInfo.authResponse.userID);
             hc.set('ncID', null);
             hc.set('hcUser', username);
             hc.set('ncUser', null);
-            hc.set('bill_1',bill_1);
-            hc.set('bill_5',bill_5);
-            hc.set('bill_10',bill_10);
-            hc.set('bill_20',bill_20);
-            hc.set('bill_50',bill_50);
+            hc.set('bill_1', bill_1);
+            hc.set('bill_5', bill_5);
+            hc.set('bill_10', bill_10);
+            hc.set('bill_20', bill_20);
+            hc.set('bill_50', bill_50);
 
             hc.save(null, {
-                success: function(hc){
+                success: function (hc) {
                     alert("Successfully saved request!");
                 },
-                error: function(hc, error){
+                error: function (hc, error) {
                     alert(error.message);
                 }
             });
         }
 
+        function getNcTranscationList(hc_transaction) {
+            var ncTransactions = new Parse.Query(ncTransaction);
+        }
 
+        function needCashCreate() {
+            $.mobile.changePage('#needcashamount', 'slide');
+        }
+
+        function ncAmountAccept() {
+            $.mobile.changePage('#needcashview', 'slide');
+
+            var transaction = new ncTransaction();
+            var amount = document.getElementById("ncslider").value;
+            transaction.set("amount", amount);
+            transaction.set("ncID", fbInfo.authResponse.userID);
+            transaction.set("ncUser", username);
+
+            var transactionQuery = new Parse.Query(ncTransaction);
+            transactionQuery.equalTo("ncID", fbInfo.authResponse.userID);
+            var needNewTransaction = true;
+            transactionQuery.find({
+                success: function (results) {
+                    for (var x = 0; x < results.length; x++) {
+                        if (results[x].get("amount") === amount) {
+                            needNewTransaction = false;
+                        } else {
+                            results[x].destroy({
+                                success: function (obj) {
+                                },
+                                error: function (obj, error) {
+                                    alert(error.message)
+                                }
+                            });
+                        }
+                    }
+                },
+                error: function (error) {
+                    alert(error.message);
+                }
+
+            });
+            if (needNewTransaction) {
+                transaction.save(null, {
+                    success: function (user) {
+                        alert("Successfully saved transaction!");
+                    },
+                    error: function (user, error) {
+                        alert(error.message);
+                    }
+                });
+            }
+
+
+        }
     }
 
 };
