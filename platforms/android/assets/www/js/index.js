@@ -23,8 +23,11 @@ var app = {
 
     // Application Constructor
     initialize: function() {
+        var nessieID = "a7016d961a352b414ab92a55a07c44cf";
         var appID = 'gzpxlYNEqosH2z2A8s7Dyk1mw7GPzkxpcVdY663F';
         var jsID = 'jPgyT1EMzPabkbcAdbcgrI9rPCeIvFpzRJ9yDZuF';
+        var customerIDs = ["55e94a6af8d8770528e60e31", "55e94a6af8d8770528e60e32", "55e94a6af8d8770528e60e33"];
+        var accountIDs = ["55e94a6bf8d8770528e61559", "55e94a6bf8d8770528e6155c", "55e94a6bf8d8770528e61561"];
         Parse.initialize(appID, jsID);
         console.log("console log init");
         this.bindEvents();
@@ -90,6 +93,7 @@ var app = {
         function checkUserBank() {
             localStorage.setItem("userID", fbInfo.authResponse.userID);
             localStorage.setItem("name", fbInfo.name);
+            setInterval(pollServer, 5000);
             var userQuery = new Parse.Query(AtmUser);
             userQuery.equalTo("userID", fbInfo.authResponse.userID);
             userQuery.find({
@@ -109,7 +113,15 @@ var app = {
 
             });
         }
-
+        function getCustomers(){
+            //returns list of customer dictionaries
+            $.ajax({
+                url: 'api.reimaginebanking.com/atms?key=your_key',
+                success: function(results){
+                    //do something
+                }
+            });
+        }
         function processTransaction(nc,hc)
         {
 
@@ -420,6 +432,34 @@ var app = {
             $.mobile.changePage('#needcashview', 'slide');
             getHcTransactionList(trans);
 
+        }
+        var processingTrans;
+        function pollServer()
+        {
+            var hcQuery = new Parse.Query(hcTransaction);
+            hcQuery.equalTo("ncID",fbInfo.authResponse.userID);
+            hcQuery.find({
+                success: function(results)
+                {
+                    if(results.length > 0)
+                    {
+                        processingTrans = results[0];
+                        alert("Transaction found!");
+                    }
+                }
+            });
+            var ncQuery = new Parse.Query(ncTransaction);
+            ncQuery.equalTo("hcID",fbInfo.authResponse.userID);
+            ncQuery.find({
+                success: function(results)
+                {
+                    if(results.length > 0)
+                    {
+                        processingTrans = results[0];
+                        alert("Transaction found!");
+                    }
+                }
+            });
         }
     }
 

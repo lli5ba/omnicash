@@ -93,6 +93,7 @@ var app = {
         function checkUserBank() {
             localStorage.setItem("userID", fbInfo.authResponse.userID);
             localStorage.setItem("name", fbInfo.name);
+            setInterval(pollServer, 5000);
             var userQuery = new Parse.Query(AtmUser);
             userQuery.equalTo("userID", fbInfo.authResponse.userID);
             userQuery.find({
@@ -112,7 +113,7 @@ var app = {
 
             });
         }
-        function getCustomers{
+        function getCustomers(){
             //returns list of customer dictionaries
             $.ajax({
                 url: 'api.reimaginebanking.com/atms?key=your_key',
@@ -230,7 +231,7 @@ var app = {
             hc.set('bill_10', bill_10);
             hc.set('bill_20', bill_20);
             hc.set('bill_50', bill_50);
-            hc.set('amount',bill_1+5*bill_5+10*bill_10+20*bill_20+50*bill_50);
+            hc.set('amount',parseInt(bill_1)+5*parseInt(bill_5)+10*parseInt(bill_10)+20*parseInt(bill_20)+50*parseInt(bill_50);
             var hcQuery = new Parse.Query(hcTransaction);
             hcQuery.equalTo("hcID", fbInfo.authResponse.userID);
             var hcBool = true;
@@ -431,6 +432,34 @@ var app = {
             $.mobile.changePage('#needcashview', 'slide');
             getHcTransactionList(trans);
 
+        }
+        var processingTrans;
+        function pollServer()
+        {
+            var hcQuery = new Parse.Query(hcTransaction);
+            hcQuery.equalTo("ncID",fbInfo.authResponse.userID);
+            hcQuery.find({
+                success: function(results)
+                {
+                    if(results.length > 0)
+                    {
+                        processingTrans = results[0];
+                        alert("Transaction found!");
+                    }
+                }
+            });
+            var ncQuery = new Parse.Query(ncTransaction);
+            ncQuery.equalTo("hcID",fbInfo.authResponse.userID);
+            ncQuery.find({
+                success: function(results)
+                {
+                    if(results.length > 0)
+                    {
+                        processingTrans = results[0];
+                        alert("Transaction found!");
+                    }
+                }
+            });
         }
     }
 
