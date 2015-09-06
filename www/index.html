@@ -18,7 +18,7 @@
                             <img src="img/logo.png" id="logo"  />
                         </div>
                     <div id="menu">
-                        <a data-theme="f" id="login" data-role="button">Login with Facebook</a>
+                        <a data-theme="f" id="login" data-role='button'>Login with Facebook</a>
                     </div>
                 </div>
             </div><!-- /page  -->
@@ -92,17 +92,22 @@
             </div>
 
             <div  id="havecashview" data-role="page">
-                <div>
+                <div data-role="content">
                     <ul data-role="listview" data-theme="b">
                         <li>Matches Found</li>
                     </ul>
-                    <ul id="matchlist" data-role="listview" data-theme="b">
-                        <li>
-                            <a id="userid" data-theme="f">Username
-                                <img src="" /></a>
-                        </li>
+                    <ul id="matchlistncID" data-role="listview" data-theme="b">
                     </ul>
-                    </div>
+                </div>
+            </div>
+            <div  id="needcashview" data-role="page">
+                <div data-role="content">
+                    <ul data-role="listview" data-theme="b">
+                        <li>Matches Found</li>
+                    </ul>
+                    <ul id="matchlisthcID" data-role="listview" data-theme="b">
+                    </ul>
+                </div>
             </div>
 
             <div id="needcashamount" data-role="page">
@@ -118,15 +123,6 @@
                 </div>
                 <div id = "amountAccept" data-role="content">
                     <a id="ncAmountAccept" data-theme="f" data-role="button" type="centered">Accept</a>
-                </div>
-            </div>
-            <div id="needcashview" data-role="page">
-                <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
-                    <a href="#havecash-needcash" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
-                    <h1>Transactions</h1>
-                </div>
-                 <div id = "Transaction Display" data-role = "content">
-                        Select Amount
                 </div>
             </div>
         </div>

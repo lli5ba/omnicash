@@ -167,17 +167,58 @@ var app = {
 
         }
 
-        function updateMatchList(matches){
-            for (var i = 0; i < matches.length; i++) {
-                var usern = matches[i].get("ncUser");
-                var userID = matches[i].get("ncID");
-                var listelement = "<li><a id='" + userID + "' data-theme='f'>" + usern +
-                   "<img src='http://graph.facebook.com/" + userID + "/picture?type=square'/></a></li>";
-                //var listelement = "<li><a id='userID' data-theme='f'>usern " +
-                  //  "<img src='http://graph.facebook.com/userID/picture?type=square'/></a></li>";
-                $(listelement).appendTo("#matchlist")
+        function updateMatchList(matches,usertag,idtag){
+            var id = "matchlist"+idtag;
+            document.getElementById(id).innerHTML='';
+
+            for (var i = 0; i < matches.length; i++) 
+            {
+                var usern = matches[i].get(usertag);
+                var userID = matches[i].get(idtag);
+                if(userID !== fbInfo.authResponse.userID)
+                {
+
+
+                if(document.getElementById(id).innerHTML.indexOf(userID) < 0)
+                {
+                var listelement = "<li class='mlistelement' data-theme='b' data-role='button' id='" + userID + "'><div id='amnt' class='ui-grid-b'><div class ='ui-block-a'><a id='inner:" + userID + "' data-theme='f' data-role='content' class='uname'>" + usern + 
+                "</a></div><a data-theme='f' data-role='content'>$"+matches[i].get("amount") + "</a><div class='ui-block-b'></div><div class='ui-block-c'><img src='http://graph.facebook.com/" + userID + "/picture?type=square'/></div></li>";
+                //"<img src='http://graph.facebook.com/" + userID + "/picture?type=square'/>
+                $(listelement).appendTo("#"+id);
                 }
+                }
+
+            }
+         $("li").click(function(){
+            var mid = this.id;
+            var hcQuery = new Parse.Query(hcTransaction);
+            hcQuery.equalTo("hcID",mid);
+            hcQuery.find({
+                success: function (results) {
+                    if(results.length > 0)
+                    {
+                        results[0].set("ncID",mid);
+                        results[0].set("ncUser",username);
+                        results[0].save(null,{success: function(user){},error: function(user,error){alert("Error")}});
+                    }else{
+                        var ncQuery = new Parse.Query(ncTransaction);
+                        ncQuery.equalTo("hcID",mid);
+                        ncQuery.find({
+                            success: function(results){
+                                if(results.length > 0)
+                                {
+                                    results[0].set("hcID",mid);
+                                    results[0].set("hcUser",username);
+                                    results[0].save(null,{});
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            });
         }
+
         function createHcTransaction(bill_1, bill_5, bill_10, bill_20, bill_50) {
             var hc = new hcTransaction();
             hc.set('hcID', fbInfo.authResponse.userID);
@@ -189,6 +230,7 @@ var app = {
             hc.set('bill_10', bill_10);
             hc.set('bill_20', bill_20);
             hc.set('bill_50', bill_50);
+            hc.set('amount',bill_1+5*bill_5+10*bill_10+20*bill_20+50*bill_50);
             var hcQuery = new Parse.Query(hcTransaction);
             hcQuery.equalTo("hcID", fbInfo.authResponse.userID);
             var hcBool = true;
@@ -238,6 +280,26 @@ var app = {
             return hc;
         }
 
+        function getHcTransactionList(nc_transaction)
+        {
+            var hcTransactions = new Parse.Query(hcTransaction);
+
+            hcTransactions.find({
+                success: function(results)
+                {
+                    var matchesFound = [];
+                    for(var i = 0; i < results.length; i++){
+                        var compatible = checkCompatibility(nc_transaction.get("amount"),results[i].get("bill_1"), results[i].get("bill_5"), results[i].get("bill_10"), results[i].get("bill_20"), results[i].get("bill_50"));
+                        if (compatible){
+                            matchesFound.push(results[i]);
+                        }
+                    }
+                    updateMatchList(matchesFound,"hcUser","hcID");
+                }
+            });
+        }
+
+
         function getNcTranscationList(hc_transaction) {
             var bill_1 = hc_transaction.get("bill_1");
             var bill_5 = hc_transaction.get("bill_5");
@@ -251,15 +313,13 @@ var app = {
                     // results is an array of Parse.Object.
                     var matchesFound = [];
                     for(var i = 0; i < results.length; i++){
-                        alert("From for loop results: " + JSON.stringify(results[i]));
                         var amount = results[i].get("amount");
                         var compatible = checkCompatibility(amount,bill_1, bill_5, bill_10, bill_20, bill_50);
                         if (compatible){
                             matchesFound.push(results[i]);
-                            alert(matchesFound)
                         }
                     }
-                    updateMatchList(matchesFound);
+                    updateMatchList(matchesFound,"ncUser","ncID");
                 },
 
                 error: function(error) {
@@ -269,9 +329,9 @@ var app = {
         }
 
         function checkCompatibility(amount,bill_1, bill_5, bill_10, bill_20, bill_50){
-            alert("made it to compatibile")
             var compatible = false;
             var stack = [];
+            var initAmount = amount;
             for(var i = 0; i < bill_50; i++) {
                 stack.push(50);
             }
@@ -294,7 +354,7 @@ var app = {
                     amount = amount - top;
                 }
             }
-            if (amount === 0){
+            if (amount <= 10){
                 compatible = true;
             }
             return compatible;
@@ -304,9 +364,8 @@ var app = {
             $.mobile.changePage('#needcashamount', 'slide');
         }
 
-        function ncAmountAccept() {
-            //$.mobile.changePage('#needcashview', 'slide');
-
+        function createncTransaction(amount)
+        {
             var transaction = new ncTransaction();
             var amount = document.getElementById("ncslider").value;
             transaction.set("amount", amount);
@@ -314,7 +373,6 @@ var app = {
             transaction.set("ncUser", username);
             transaction.set("hcID",null);
             transaction.set("hcUser",null);
-
             var transactionQuery = new Parse.Query(ncTransaction);
             transactionQuery.equalTo("ncID", fbInfo.authResponse.userID);
             var needNewTransaction = true;
@@ -364,7 +422,14 @@ var app = {
                 }
 
             });
+            return transaction;
+        }
 
+        function ncAmountAccept() {
+
+            var trans = createncTransaction();
+            $.mobile.changePage('#needcashview', 'slide');
+            getHcTransactionList(trans);
 
         }
     }

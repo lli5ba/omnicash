@@ -95,6 +95,33 @@ margin: .8em 30% .8em;
     width  : 100%;
     height : auto;
 }
+#matchlistncID{
+    margin-top: 20px;
+}
+#matchlisthcID{
+    margin-top: 20px;
+}
+.mlistelement {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background:#3498db !important;
+}
+.mlistelement a{
+
+    font-size: 200%;
+    font-color: black;
+
+}
+#amd{
+    margin-top:20px;
+}
+.mlistelement img{
+    margin-top: 5px;
+    margin-left: 20px;
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
 
 .ui-btn-active {
     border: 1px solid       #1abc9c /*{global-active-border}*/;
