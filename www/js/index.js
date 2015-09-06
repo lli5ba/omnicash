@@ -23,8 +23,11 @@ var app = {
 
     // Application Constructor
     initialize: function() {
+        var nessieID = "a7016d961a352b414ab92a55a07c44cf";
         var appID = 'gzpxlYNEqosH2z2A8s7Dyk1mw7GPzkxpcVdY663F';
         var jsID = 'jPgyT1EMzPabkbcAdbcgrI9rPCeIvFpzRJ9yDZuF';
+        var customerIDs = ["55e94a6af8d8770528e60e31", "55e94a6af8d8770528e60e32", "55e94a6af8d8770528e60e33"];
+        var accountIDs = ["55e94a6bf8d8770528e61559", "55e94a6bf8d8770528e6155c", "55e94a6bf8d8770528e61561"];
         Parse.initialize(appID, jsID);
         console.log("console log init");
         this.bindEvents();
@@ -109,7 +112,15 @@ var app = {
 
             });
         }
-
+        function getCustomers{
+            //returns list of customer dictionaries
+            $.ajax({
+                url: 'api.reimaginebanking.com/atms?key=your_key',
+                success: function(results){
+                    //do something
+                }
+            });
+        }
         function processTransaction(nc,hc)
         {
 
