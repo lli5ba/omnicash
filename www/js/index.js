@@ -121,7 +121,7 @@ var app = {
 
             user.save(null, {
                 success: function(user){
-                    alert("Successfully saved user!");
+                    
                 },
                 error: function(user, error){
                     alert(error.message);
@@ -159,23 +159,23 @@ var app = {
                             });
                         }
                     }
+                    if(needNewTransaction)
+                    {
+                    transaction.save(null, {
+                            success: function(user){
+                                
+                            },
+                            error: function(user, error){
+                                alert(error.message);
+                            }
+                        });
+                    }
                 },
                 error: function(error){
                     alert(error.message);
                 }
 
             });
-            if(needNewTransaction)
-            {
-                transaction.save(null, {
-                    success: function(user){
-                        alert("Successfully saved transaction!");
-                    },
-                    error: function(user, error){
-                        alert(error.message);
-                    }
-                });
-            }
 
         }
 
